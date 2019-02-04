@@ -1,0 +1,65 @@
+#+TITLE: Emacs键绑定
+#+DATE: 2019-02-03
+
+* Most Important Keybinds
+| Keybind | Default Function           | Description                                                      |
+|---------+----------------------------+------------------------------------------------------------------|
+| C-x C-c | save-buffers-kill-terminal | Offer to save each buffer, then exit                             |
+| M-x     | execute-extended-command   | Execute Command                                                  |
+| C-g     | keyboard-quit              | Abort current command                                            |
+| C-u     | universal-argument         |                                                                  |
+| C-x C-f | find-file                  | Switch to a buffer visiting file                                 |
+| C-x C-s | save-buffer                | Save current buffer in visited file if modified                  |
+| C-x C-w | write-file                 | write current buffer to filename                                 |
+| C-f     | forward-char               |                                                                  |
+| C-b     | backward-char              |                                                                  |
+| M-f     | forward-word               |                                                                  |
+| M-b     | backward-word              |                                                                  |
+| C-p     | previous-line              |                                                                  |
+| C-n     | next-line                  |                                                                  |
+| C-x C-h | describe-prefix-bindings   | Describe the bindings of the prefi                               |
+| C-h C-c | describe-copying           | Copyright                                                        |
+| C-h C-f | view-emacs-FAQ             |                                                                  |
+| C-h C-h | help-for-help              | Help command description                                         |
+| C-h b   | describe-bindings          | Display a buffer showing a list of all all defined keys          |
+| C-h c   | describe-key-briefly       | Print the name of the function KEY invokes                       |
+| C-h k   | describe-key               |                                                                  |
+| C-h l   | view-lossage               | Display last few input keystrokes and the commands run           |
+| C-h m   | describe-mode              |                                                                  |
+| C-h o   | describe-symbols           |                                                                  |
+| C-h i   | info                       | Enter documentation browser                                      |
+| C-h r   | info-emacs-manual          | Emacs manual                                                     |
+| C-h t   | help-with-tutorial         | Emacs tutorial                                                   |
+| C-h w   | where-is                   | Print message listing key sequences that invoke the command      |
+| C-h p   | finder-by-keyword          | Find packages matching a given keyword                           |
+| C-h s   | describe-syntax            | Describe the syntax specifications in the syntax table of BUFFER |
+| C-h v   | describe-variable          | Display the full documentation of VARIABLE                       |
+
+* Customize keybind
+- See [[file:01-introduction.org::#modifier-key][01-introduction modifier key]];
+- functions: global-set-key, define-key, kbd, mapc
+- See =~/.emacs.d/config.org=
+- example
+#+BEGIN_SRC emacs-lisp
+  (global-set-key "\C-b" #'backward-char)
+  (define-key global-map (kbd "M-f") #'forward-word)
+#+END_SRC
+
+* Lookup keybinds
+- 查看所有的keybinds: =C-h b=
+- 查看以 =C-x= 为前缀的keybinds: =C-x C-h=
+- 查看C-f的详细描述： =C-h k C-f=
+- 查看M-x的概要描述： =C-h c M-x=
+
+| Key Seq | Description                                                     |
+|---------+-----------------------------------------------------------------|
+| C-h b   | List all defined keys                                           |
+| C-h c   | Print the function name KEY invokes                             |
+| C-h k   | Print the documentation of the function invoked by KEY          |
+| C-x C-h | Describe the bindings of the prefix used to reach this command. |
+
+* References
+- Ergo Keybinds Example :: http://ergoemacs.org/emacs/keyboard_shortcuts_examples.html
+- Function Keys :: https://www.gnu.org/software/emacs/manual/html_node/elisp/Function-Keys.html
+
+* Footnotes

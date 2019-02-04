@@ -1,0 +1,143 @@
+#+TITLE: Introduction
+#+DATE: 2019-02-03
+
+* What is Emacs
+*Emacs* /ˈiːmæks/是一个文本编辑器家族，具备可扩展特征。[[https://www.gnu.org/software/emacs/][GNU Emacs]]是使用最为广泛的
+Emacs实现，具备可扩展、可定制、自文档化、实时显示特点，支持Linux、Windows、Mac
+平台。下面这句话是GNU Emacs主页的描述：
+#+BEGIN_SRC text
+  An extensible, customizable, free/libre text editor — and more.
+
+  At its core is an interpreter for Emacs Lisp, a dialect of the Lisp programming
+  language with extensions to support text editing.
+#+END_SRC
+
+20世纪70年代是编辑器的井喷期，1972年发布的Emacs与1976年发布的VI使用最为广泛。
+Emacs与VI(VIM)都有较强的可定制性、趣味性，熟练掌握后可改善工作效率。然而，对比
+其他编辑器，Emacs与VIM都有着更为陡峭的学习曲线与高昂的学习成本。
+
+相对比VI的专注，Emacs一直在功能蔓延，编辑文本、调试程序、浏览网页、管理日程、
+收发邮件、阅读文档（info/man/PDF/EPUB）、播放音乐视频，一切应有尽有。对于Emacser
+而言，Emacs是一个伟大的操作系统，原本的操作系统只是它的启动程序。
+
+Emacs与VI在终端与X视窗下都有良好的使用体验，对于经常在终端工作的程序员群体，有着
+更高的回报。
+
+* Emacs and VI
+对编辑器的最高需求是，在你想到要做什么之前，编辑器已经作出正确猜测并显示出来。
+Emacs与VI是最接近的。在这颗星球上，人们称Emacs为神之编辑器，称VIM为编辑器之神。
+
+Emacs与VI有不同的设计理念，Emacs对任意文档设定一个主模式(major-mode)与多个
+次模式(minor-mode)。VI支持命令模式、编辑模式、拷贝模式。
+
+Emacs与VI之间的对抗称为编辑器之战（参见[[https://en.wikipedia.org/wiki/Emacs][WIKI]]、[[https://zh.wikipedia.org/wiki/Emacs][WIKI CN]]）。
+
+就我个人而言，在接触Emacs之前已有多年的VIM使用经验，因为[[https://en.wikipedia.org/wiki/Emacs][OrgMode]]开始使用Emacs。
+目前Emacs是我的主力编辑器，同时也会少量使用VIM。我更喜欢Emacs。
+
+Emacs定制后启动时间往往比较久，可能达成5s以上。因此有VIMER说在Emacs启动完成前，
+VI已经把活干完退出了。目前的解决办法是用Daemon模式启动Emacs（server），然后用
+emacsclient连接上去编辑文件，这样一般能做到瞬间启动。
+
+* Goals
+对于我而言，对编辑器核心需求如下，按照重要性排序：
+- 稳定：不会Crash推出，不会导致内容丢失；
+- 快速：输入立即响应，不卡顿；
+- 兼容：X视窗与终端操作兼容；
+- 绑定：对常用操作绑定快捷键，文本内进行各种移动与编辑，同时，对越高频的操作，
+  赋予越方便的快捷键；
+- 语法：支持多种编程语言语法识别与检查，并进行着色显示；
+- 补齐：在输入少量前缀字符时，聪明的识别补齐，或者提供多个候选；
+- 主题：根据主题（theme）进行显示颜色定制；
+
+本系列文档（视频）展示怎样一步步定制Emacs，达成上述需求。
+
+不同的用户有不同的需求，比如所有工作都在X视窗下进行的人员，不会有X视窗与终端
+操作兼容的需求。因为终端传输是基于字符的，而X视窗支持KeyEvent，这导致终端缺少
+部分修饰键（modifier key）组合，进而影响快捷键选择。可以根据自己的需求进行充分
+定制，这也正是Emacs的优势。
+
+* Install
+** version
+编写文档/录制视频所用版本为Emacs 26.1。
+
+** Binary Install
+- Mac :: https://emacsformacosx.com/
+- Linux/Windows :: https://www.gnu.org/software/emacs/
+
+** Source Install
+Download source from git then compile:
+#+BEGIN_SRC sh
+~$ git clone git://git.savannah.gnu.org/emacs.git
+~$ git archive --prefix=emacs-26.1.91/ --format=tgz emacs-26.1.91 > \
+   ~/gnu/emacs-26.1.91.tgz
+~$ cd ~/gnu/
+~$ tar xvf emacs-26.1.91.tar
+~$ cd emacs-26.1.91
+~$ ./autogen.sh
+~$ ./configure --help
+~$ ./configure
+~$ make && sudo make install
+#+END_SRC
+
+* Modifier Key
+  :PROPERTIES:
+  :CUSTOM_ID: modifier-key
+  :END:
+
+Emacs操作重度依赖各种修饰键(Modifier Key)的组合，因此被调侃Emacs是Esc， Meta,
+Alt, Ctrl, Shift/Super修饰键的缩写[fn:abbr]。Meta与Alt是历史产物，当前的标准PC
+键盘中没有Meta，Emacs默认把Alt映射为Meta。考虑终端与X视窗兼容性，基本不使用
+Shift, Super(Win), Hyper(Mac Command)[fn:modifier-key]，也使用多种修饰键的组合。
+
+组合键有两种键入方式，一是同时按下，记录为<Modifer-Key>-<Character>，另一种是
+分别输入，记录为<Modifier-Key> <Character>。例如：
+
+| C-f     | 同时按下Ctrl与f，接着输入字母f               |
+| Esc x   | 先按下Esc后放开，接着输入字母x               |
+| C-x C-c | 先同时按下Ctrl与x，放开后接着同时按下Ctrl与c |
+
+在不进行修饰键组合时， =Esc <Character>= 总是于 =M-<Character>= 等效。
+
+修饰键表达方式参见[[https://www.gnu.org/software/emacs/manual/html_node/elisp/Function-Keys.html][GNU Emacs Manual]]，如下：
+
+| Modifier Key | Emacs Modifier Key | Example | Function               |
+|--------------+--------------------+---------+------------------------|
+| Alt          | \M                 | M-x     | Execute Extend Command |
+| Ctrl         | \C                 | C-f     | Forward Char           |
+| ESC          | \e                 | E f     | Forward Word           |
+| Meta         | \M                 | M-b     | Backward Word          |
+| Shift        | \S                 |         |                        |
+| Hyper        | \H                 |         |                        |
+| Super        | \s                 |         |                        |
+
+* Start
+终端执行 =emacs= 或者在启动菜单查找 =emacs= 启动，按下 =C-x C-c= 退出。
+
+如果你是全新接触Emacs，在启动Emacs后键入 =C-h t= 打开Emacs tutorial，仔细
+阅读完它，并按照文档内容提示进行一些输入。如果不小心弄乱了，重新键入
+=C-h t= 恢复。如果Emacs提示如下信息，输入y：
+#+BEGIN_SRC text
+You have changed the Tutorial buffer.  Revert it? (y or n)
+#+END_SRC
+
+如果你是新手，建议仔细阅读Emacs tutorial两遍，完全按照文档内容尝试操作。
+
+* Config
+Emacs默认配置文件是 =$HOME/.emacs.d/init.el= ，启动时没有 =$HOME/.emacs.d/= 目录
+则自动创建。配置文件随时间逐渐变多，有时会引入一些错误需要回滚，建议用git进行
+版本管理。GitHub或GitLab都提供免费的托管服务，我当前使用的配置文件在Github上：
+https://github.com/yygcode/.emacs.d
+
+* References
+- GNU Emacs :: https://www.gnu.org/software/emacs/
+- Emacs WIKI EN :: https://en.wikipedia.org/wiki/Emacs
+- Emacs WIKI CN :: https://zh.wikipedia.org/wiki/Emacs
+- Editor War WIKI EN :: https://en.wikipedia.org/wiki/Editor_war
+- Editor War WIKI CN :: https://zh.wikipedia.org/wiki/%E7%BC%96%E8%BE%91%E5%99%A8%E4%B9%8B%E6%88%98
+- Keyboard Shortcuts :: http://ergoemacs.org/emacs/keyboard_shortcuts_examples.html
+- This Emacs lesson ::  https://github.com/yygcode/emacs-lesson.git
+
+* Footnotes
+[fn:abbr] Emacs是Editor MACroS的缩写，见[[https://www.gnu.org/fun/jokes/gnuemacs.acro.exp.html][这里]]；
+[fn:modifier-key] 参见[[https://www.gnu.org/software/emacs/manual/html_node/emacs/Modifier-Keys.html][Manual]]、[[http://ergoemacs.org/emacs/emacs_hyper_super_keys.html][Ergo Super Hyper]]与[[https://en.wikipedia.org/wiki/Modifier_key][WIKI]]；

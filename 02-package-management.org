@@ -1,0 +1,20 @@
+#+TITLE: Emacs包管理
+#+DATE: 2019-02-03
+
+* package system
+- 加载包管理系统；
+- 设置package-archives，因为被屏蔽原因，需要设置镜像站点，同时支持proxy；
+
+* packages of package maintenance
+- use-package: install, config and load packages
+- quelpa: install package from source code, especially for git repo
+- quelpa-use-package: integrate quelpa to use-package
+
+* org-babel
+- 使用org-babel-load-file加载org文件中的lisp代码；
+- 使用org mode literate programming(文学编程)配置emacs；
+
+* References
+- use-package :: https://github.com/jwiegley/use-package
+- org mode :: https://orgmode.org/
+- Org Babel :: https://orgmode.org/worg/org-contrib/babel/
